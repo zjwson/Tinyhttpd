@@ -100,7 +100,7 @@ void accept_request(void *arg)
         query_string = url;
         while ((*query_string != '?') && (*query_string != '\0'))
             query_string++;
-        if (*query_string == '?')
+        if (*query_string == '?')  //表明是GET请求且有参数
         {
             cgi = 1;
             *query_string = '\0';
@@ -124,9 +124,9 @@ void accept_request(void *arg)
                 (st.st_mode & S_IXGRP) ||
                 (st.st_mode & S_IXOTH)    )
             cgi = 1;
-        if (!cgi)
+        if (!cgi) //无参GET请求，直接输出服务器文件到浏览器
             serve_file(client, path);
-        else
+        else  //带参GET,POST方式，url为可执行文件，则调用excute_cgi函数执行cgi脚本
             execute_cgi(client, path, method, query_string);
     }
 
